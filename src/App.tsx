@@ -1,24 +1,31 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Element from './bulma/elements';
+import Columns from './bulma/columns';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <Columns multiline>
+          <Columns.Column>
+            <div style={{
+              backgroundColor: 'magenta',
+              minHeight: '400px' 
+            }}>
+              ashknfcjhasvgdf
+            </div>
+          </Columns.Column>
+          <Columns.Column>
+          <div style={{
+              backgroundColor: 'moccasin',
+              minHeight: '400px' 
+            }}>
+              ashknfcjhasvgdf
+            </div>
+          </Columns.Column>
+
+        </Columns>
     </div>
   );
 }
