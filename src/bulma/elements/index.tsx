@@ -1,6 +1,20 @@
-import React from 'react';
+import React, { ComponentPropsWithoutRef } from 'react';
 import classnames from 'classnames';
-import { IElementProps, ResponsiveModifiers, ResponsiveProps } from './../index'
+import { ModifierProps, ResponsiveModifiers, ResponsiveProps } from './../index'
+
+interface IDiv extends ComponentPropsWithoutRef<"div"> {
+  renderAs: 'div'
+  innerRef?: React.ForwardedRef<HTMLDivElement>
+}
+
+interface ISpan extends ComponentPropsWithoutRef<"span"> {
+  renderAs: 'span'
+  innerRef?: React.ForwardedRef<HTMLSpanElement>
+}
+
+type IContainerElement = IDiv | ISpan
+
+type IContainerElementProps = IContainerElement & ModifierProps
 
 export const normalizeAlign = (align?: string) => {
 
@@ -99,7 +113,7 @@ export const useElementClassNames = ({
   untilWidescreen,
   untilFullhd,
   ...props
-}: Omit<IElementProps, 'renderAs' | 'innerRef'>) => ({
+}: Omit<IContainerElementProps, 'renderAs' | 'innerRef'> | IButtonElementProps) => ({
   classNames: classnames(
     {
       [`has-text-${textColor}`]: textColor,
@@ -158,14 +172,50 @@ export const useElementClassNames = ({
 })
 
 
-const Element = (props: IElementProps) => {
+const ContainerElement = (props: IContainerElementProps) => {
   const { renderAs, className, innerRef, children, ...rest } = props
   const { classNames, props: remainingProps } = useElementClassNames(rest);
   if (renderAs === "div") {
-    return <div className={classnames(className, classNames) || undefined}  {...remainingProps} ref={innerRef as React.ForwardedRef<HTMLDivElement> | undefined}>{children}</div>
+    return <div className={classnames(className, classNames) || undefined}  {...remainingProps as IContainerElementProps} ref={innerRef as React.ForwardedRef<HTMLDivElement> | undefined}>{children}</div>
   }
   return <span className={classnames(className, classNames) || undefined} {...remainingProps} ref={innerRef as React.ForwardedRef<HTMLSpanElement> | undefined}>{children}</span>
 }
 
+const Div = React.forwardRef<HTMLDivElement, Omit<IContainerElementProps, 'renderAs' | 'innerRef'>>(({ children, ...rest }, ref) => {
+  return <ContainerElement renderAs="div" {...rest} innerRef={ref}>
+    {children}
+  </ContainerElement>
+})
 
-export default Element
+const Span = React.forwardRef<HTMLSpanElement, Omit<IContainerElementProps, 'renderAs' | 'innerRef'>>(({ children, ...rest }, ref) => {
+  return <ContainerElement renderAs="span" {...rest} innerRef={ref}>
+    {children}
+  </ContainerElement>
+})
+
+type IButtonElementProps = ComponentPropsWithoutRef<"button"> & ModifierProps
+
+const ButtonElement = React.forwardRef<HTMLButtonElement, IButtonElementProps>((props, ref) => {
+  const { className, children, ...rest } = props
+  const { classNames, props: remainingProps } = useElementClassNames(rest);
+
+  return <button
+    className={classnames(className, classNames) || undefined}
+    {...remainingProps as IButtonElementProps} ref={ref}>
+    {children}
+  </button>
+})
+
+const BaseElements = {
+  Div: Div,
+  Span: Span,
+  Button: ButtonElement
+}
+
+export type {
+  IButtonElementProps,
+  IContainerElementProps
+}
+
+
+export default BaseElements

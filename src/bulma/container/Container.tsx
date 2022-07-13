@@ -1,8 +1,10 @@
 import classNames from 'classnames';
 import React from 'react'
-import { Breakpoint, Element, IElementProps } from '..'
+import { Breakpoint, BaseElements, IContainerElementProps } from '..'
 
-type IProps = IElementProps & {
+const { Div } = BaseElements
+
+type IProps = IContainerElementProps & {
     max?: boolean;
     breakpoint?: Breakpoint | 'fluid';
 }
@@ -10,16 +12,15 @@ type IProps = IElementProps & {
 const Container = React.forwardRef<HTMLDivElement, IProps>(({ children, max, breakpoint, className, ...props }, ref) => {
     const canSetMax = ['desktop', 'widescreen'].includes(breakpoint ?? '');
     return (
-        <Element
+        <Div
             {...props}
-            renderAs='div'
-            innerRef={ref}
             className={classNames('container', className, {
                 [`is-${canSetMax && max ? 'max-' : ''}${breakpoint}`]: breakpoint,
             })}
-        >{children}
-
-        </Element>
+            ref={ref}
+        >
+            {children}
+        </Div>
     )
 })
 

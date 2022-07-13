@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import React, { forwardRef, useMemo } from 'react'
 import { ColumnGroupProps } from '.';
-import { IElementProps } from '..';
-import Element from '../elements'
+import { BaseElements, IContainerElementProps } from '..'
 
-type ColumnsProps = Omit<IElementProps, 'renderAs'> & ColumnGroupProps
+const { Div } = BaseElements
+
+type ColumnsProps = Omit<IContainerElementProps, 'renderAs'> & ColumnGroupProps
 
 const Columns = forwardRef<HTMLDivElement, ColumnsProps>((props, ref) => {
 
@@ -88,12 +89,13 @@ const Columns = forwardRef<HTMLDivElement, ColumnsProps>((props, ref) => {
   // }, [mobile, tablet, desktop, widescreen, fullhd, touch])
 
   return (
-    <Element renderAs='div'
+    <Div
       {...rest}
       {...{ mobile, tablet, desktop, widescreen, fullhd, touch }}
       className={classnames}
-      innerRef={ref}
-    >{children}</Element>
+      ref={ref}>
+        {children}
+    </Div>
   )
 })
 

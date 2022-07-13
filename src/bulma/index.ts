@@ -1,5 +1,7 @@
-import { ComponentPropsWithoutRef } from "react";
-import Element from "./elements";
+import BaseElements, {
+    IButtonElementProps,
+    IContainerElementProps
+} from "./elements";
 
 interface HelperProps {
     clearfix?: boolean;
@@ -163,81 +165,13 @@ export type {
     ModifierProps
 }
 
-export interface IDiv extends ComponentPropsWithoutRef<"div"> {
-    renderAs: 'div'
-    innerRef?: React.ForwardedRef<HTMLDivElement>
-}
 
-export interface ISpan extends ComponentPropsWithoutRef<"span"> {
-    renderAs: 'span'
-    innerRef?: React.ForwardedRef<HTMLSpanElement>
-}
-
-type IElement = IDiv | ISpan
-
-type IElementProps = IElement & ModifierProps
-
-
-export type { IElementProps }
-
+export type Size = 'small' | 'medium' | 'large' | string;
 
 // export components
-export { Element }
+export { BaseElements }
 
-
-// type HTMLAttributes<K extends keyof JSX.IntrinsicElements> = OmitKeys<
-//   JSX.IntrinsicElements[K],
-//   keyof ModifierProps | 'ref'
-// >;
-
-
-// /**
-//  * Defines all Bulma size values
-//  */
-// export type Size = 'small' | 'medium' | 'large' | string;
-
-// /**
-//  * Defines all Bulma breakpoint values
-//  */
-
-// type RenderAsComponentProps<
-//   TComponent
-// > = TComponent extends keyof JSX.IntrinsicElements
-//   ? HTMLAttributes<TComponent>
-//   : TComponent extends React.ComponentType<infer Props>
-//   ? Props & JSX.IntrinsicAttributes
-//   : never;
-
-// export type OmitKeys<T, U> = Pick<T, Exclude<keyof T, U>>;
-
-// export type RenderAsComponent = React.ElementType;
-
-// export type ElementProps<
-//   TProps,
-//   TComponent extends RenderAsComponent
-// > = ModifierProps & {
-//   className?: string;
-//   domRef?: React.RefObject<TComponent>;
-//   renderAs?: TComponent;
-//   style?: React.CSSProperties;
-//   display?: DisplayModifier;
-//   invisible?: boolean;
-// } & OmitKeys<RenderAsComponentProps<TComponent>, keyof TProps>;
-
-// export type BulmaComponent<
-//   TProps,
-//   TDefaultHTMLElement extends RenderAsComponent
-// > = <TComponent extends RenderAsComponent = TDefaultHTMLElement>(
-//   props: TProps & ElementProps<TProps, TComponent>,
-// ) => React.ReactElement;
-
-// export type BulmaComponentWithoutRenderAs<
-//   TProps,
-//   THTMLElement extends RenderAsComponent
-// > = (
-//   props: TProps & Omit<ElementProps<TProps, THTMLElement>, 'renderAs'>,
-// ) => React.ReactElement;
-
-// export type BulmaComponentWithoutModifiers<TProps> = (
-//   props: TProps,
-// ) => React.ReactElement;
+export type {
+    IButtonElementProps,
+    IContainerElementProps
+}
